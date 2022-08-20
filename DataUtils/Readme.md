@@ -8,7 +8,7 @@ Made by [HeartwarmingFox](https://github.com/fluffballdev)
 How to use:
 
 1. Add a reference to this library after downloading it.
-2. Add a connection string to `Appsettings.json` and `Appsettings.Development.json`
+2. Add a connection string to ```Appsettings.json``` and ```Appsettings.Development.json```
 
 Example:
 ```
@@ -16,10 +16,10 @@ Example:
 "Default": "Server=MyServerAddress;Database=MyDatabaseName;Uid=MyUser;Pwd=MyPass;"
 }
 ```
-3. Add the sql manager to your `Program.cs` or configuration code.
+3. Add the sql manager to your ```Program.cs``` or configuration code.
 <br>
-Example: `builder.Services.AddTransient<ISqlDataManager, SqlDataManager>();`
-4. To add models & Data see `Example` folder.
+Example: ```builder.Services.AddTransient<ISqlDataManager, SqlDataManager>();```
+4. To add models & Data see ```Example``` folder.
 
 ---
 
