@@ -16,9 +16,9 @@ Example:
 "Default": "Server=MyServerAddress;Database=MyDatabaseName;Uid=MyUser;Pwd=MyPass;"
 }
 ```
-3. Add the sql manager to your ```Program.cs``` or configuration code.
-<br>
-Example: ```builder.Services.AddTransient<ISqlDataManager, SqlDataManager>();```
+3. Add the sql manager to your ```Program.cs``` or configuration code <br> with <pre>"ConnectionStrings": {
+       "Default": "Server=MyServerAddress;Database=MyDatabaseName;Uid=MyUser;Pwd=MyPass;"
+   }</pre>
 4. To add models & Data see ```Example``` folder.
 
 ---
