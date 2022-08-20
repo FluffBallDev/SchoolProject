@@ -20,6 +20,7 @@ Example:
 <br>
 Example: `builder.Services.AddTransient<ISqlDataManager, SqlDataManager>();`
 4. To add models & Data see `Example` folder.
+
 ---
 
 #### Dependencies
