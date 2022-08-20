@@ -1,0 +1,70 @@
+﻿@page "/People"
+@using DataUtils
+@using DataUtils.Data
+@using DataUtils.Models
+@using SchoolProject.Models
+
+@inject IUserData _db
+<h3>Users</h3>
+<br/>
+<h4>Register a new user</h4>
+<EditForm Model="@_newUser" OnValidSubmit="@ValidRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <InputText id="username" @bind-Value="_newUser.UserName" />
+    <InputText id="email" @bind-Value="_newUser.EmailAddress"></InputText>
+    <InputText id="password" @bind-Value="_newUser.Password" />
+    <InputText id="passwordRepeat" @bind-Value="_newUser.PasswordRepeat" />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+<br/>
+<h4>Current users</h4>
+@if (users is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>UserName</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var x in users)
+            {
+                <tr>
+                    <td>@x.UserName</td>
+                    <td>@x.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private List<User> users;
+
+    private RegisterUserModel _newUser = new RegisterUserModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        users = await _db.GetUsers();
+    }
+
+    private async Task ValidRegister()
+    {
+        User u = new User()
+        {
+            UserName = _newUser.UserName,
+            Email = _newUser.EmailAddress,
+            Password = _newUser.Password
+        };
+        await _db.InsertUser(u);
+        
+        users.Add(u);
+        _newUser = new RegisterUserModel();
+    }
+}

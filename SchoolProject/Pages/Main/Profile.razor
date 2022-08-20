@@ -1,0 +1,15 @@
+﻿@page "/Profile"
+<h3>Profile</h3>
+
+@if (meme)
+    {
+        <RegisterForm></RegisterForm>
+    }
+    else
+    {
+        <h3>No memes</h3>
+}
+
+@code {
+    bool meme = true;
+}

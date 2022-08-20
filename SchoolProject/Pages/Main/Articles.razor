@@ -1,0 +1,39 @@
+﻿@page "/Articles"
+@using DataUtils.Data
+@using DataUtils.Models
+
+@inject IContentData _db;
+@inject IJSRuntime _jsRuntime;
+<h3>Articles</h3>
+
+@if (contents is null)
+{
+    <p><em>Loading..</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var x in contents)
+        {
+            <tr>
+                <td><a href="/articles?getArticle=@x.Id">@x.Title</a></td>
+                <td>&nbsp;</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    private List<Content> contents;
+    protected override async Task OnInitializedAsync()
+    {
+        contents = await _db.GetContent();
+    }
+}

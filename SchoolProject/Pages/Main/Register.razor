@@ -1,0 +1,132 @@
+﻿@page "/Register"
+<PageTitle>Registration</PageTitle>
+
+@using DataUtils.Data
+@using DataUtils.Models
+@using SchoolProject.Models
+@using SchoolProject.Util
+
+@inject IUserData _db
+@inject IJSRuntime _jsRuntime
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center">Registration</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <div class="card">
+                    <div class="card-body">
+                        @switch (_result)
+                        {
+                            case "usernametaken":
+                                <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+                                    <p>Username taken. Please choose a different username.</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                break;
+                            case "registered":
+                                <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+                                    <p>User registered successfully.</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                                break;
+                                default:
+                                    <div></div>
+                                    
+                                    break;
+                        }
+                        <EditForm Model="@_newUser" OnValidSubmit="@ValidRegister">
+                            <DataAnnotationsValidator/>
+                            <div class="form-group row">
+                                <label class="form-label col-form-label col text-center">Username</label>
+                                <div class="form-group col-8 bKrLn-pad-3">
+                                    <InputText class="form-control" id="username" autocomplete="username" @bind-Value="_newUser.UserName"/>
+                                    <ValidationMessage For="() => _newUser.UserName"/>
+                                </div>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0">
+                                <label class="form-label col-form-label col text-center">Email Address</label>
+                                <div class="form-group col-8 bKrLn-pad-3">
+                                    <InputText class="form-control" id="email" autocomplete="email" type="email" @bind-Value="_newUser.EmailAddress"/>
+                                    <ValidationMessage For="() => _newUser.EmailAddress"/>
+                                </div>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0">
+                                <label class="form-label col-form-label col text-center">Password</label>
+                                <div class="form-group col-8 bKrLn-pad-3">
+                                    <InputText class="form-control" id="password" autocomplete="new-password" type="password" @bind-Value="_newUser.Password"/>
+                                    <ValidationMessage For="() => _newUser.Password"/>
+                                </div>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0">
+                                <label class="form-label col-form-label col text-center bKrLn-trans-1">Confirm Password</label>
+                                <div class="form-group col-8 bKrLn-pad-3">
+                                    <InputText class="form-control" id="password-repeat" autocomplete="new-password" type="password" @bind-Value="_newUser.PasswordRepeat"/>
+                                    <ValidationMessage For="() => _newUser.PasswordRepeat"/>
+                                </div>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0 mKrLn-marg-0">
+                                <button class="btn btn-secondary" type="submit">Register</button>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0 text-center">
+                                <a href="/Profile">Have an account? Login.</a>
+                            </div>
+                            <div class="form-group row bKrLn-pad-0 text-center">
+                                <a href="/Privacy">Privacy Policy</a>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@code
+{
+    private RegisterUserModel _newUser = new RegisterUserModel();
+    private User? _user;
+    private string _result = "";
+    
+    private async Task ValidRegister()
+    {
+        var trimStr = StringUtils.TrimStr(_newUser.UserName);
+
+        _user = new User
+        {
+            UserName = trimStr,
+            Email = _newUser.EmailAddress,
+            Password = PassEncrypt.Encrypt(_newUser.Password, trimStr)
+        };
+        try
+        {
+            List<User> checkUser = await _db.GetUser(trimStr);
+            if (checkUser.Count == 0)
+            {
+                await _db.InsertUser(_user);
+                _result = "registered";
+                _newUser = new RegisterUserModel();
+            }
+            else if (checkUser.First().UserName.ToLower() == trimStr)
+            {
+                _result = "usernametaken";
+                _newUser.UserName = "";
+            }
+            else
+            {
+                await _jsRuntime.InvokeVoidAsync("alert", Guid.NewGuid());
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    //todo: COOKIES for LOGIN SYSTEM and autologin.
+    //todo: Documents for end of project. !Important
+    //todo: finalize the project. add Content, Add pages. Scratch Profile. can be added later.
+    //chars.Aggregate(seed, (str, cItem) => str.Replace(cItem, replacementCharacter));
+}
