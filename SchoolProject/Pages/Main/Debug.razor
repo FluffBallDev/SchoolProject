@@ -1,0 +1,58 @@
+﻿@page "/Debug"
+@using DataUtils.Models
+@using DataUtils.Data
+
+@inject IUserData Db;
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                <div class="site-heading">
+                    <h1>This is a debug page</h1><span class="subheading">This is just to demo our Database Connections.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-auto">
+            @if (users is null)
+            {
+                <p><em>Loading...</em></p>
+            }
+            else
+            {
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">User id</th>
+                        <th scope="col">UserName</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var x in users)
+                        {
+                            <tr>
+                                <th scope="row">@(num += 1)</th>
+                                <td>@x.Id</td>
+                                <td>@x.UserName</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+@code {
+    private List<User> users;
+    private int num = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        users = await Db.GetUsers();
+    }
+    
+}

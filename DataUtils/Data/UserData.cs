@@ -16,23 +16,23 @@ namespace DataUtils.Data
 
         public Task<List<User>> GetUsers()
         {
-            string sql = "select * from dome.users";
+            const string sql = "select * from dome.users";
 
             return _db.LoadData<User, dynamic>(sql, new { });
         }
 
         public Task<List<User>> GetUser(string? name)
         {
-            string trimStr = Regex.Replace(name, "[\\:\\;\\´\\/\'\"\\{\\(\\)\\}\\[\\]]", "_");
+            var trimStr = Regex.Replace(name!, "[\\:\\;\\´\\/\'\"\\{\\(\\)\\}\\[\\]]", "_");
 
-            string sql = $"select * from dome.users where username='{trimStr}'";
+            var sql = $"select * from dome.users where username='{trimStr}'";
             
             return _db.LoadData<User, dynamic>(sql, new { });
         }
         
         public Task InsertUser(User user)
         {
-            string sql = @"insert into dome.users (Username, Email, Password) values (@Username, @Email, @Password);";
+            const string sql = @"insert into dome.users (Id, Username, Email, Password) values (null, @Username, @Email, @Password);";
 
             return _db.SaveData(sql, user);
         }

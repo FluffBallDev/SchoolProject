@@ -9,12 +9,19 @@
 @inject IUserData _db
 @inject IJSRuntime _jsRuntime
 <section>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                <h1 class="text-center">Registration</h1>
+    <header class="masthead" style="background-image:url('img/about-bg.jpg');">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto position-relative">
+                    <div class="site-heading">
+                        <h1>Registration</h1><span class="subheading">Create an account!</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </header>
+    <div class="container">
         <div class="row">
             <div class="col d-flex justify-content-center">
                 <div class="card">
@@ -33,10 +40,10 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                                 break;
-                                default:
-                                    <div></div>
+                            default:
+                                <div></div>
                                     
-                                    break;
+                                break;
                         }
                         <EditForm Model="@_newUser" OnValidSubmit="@ValidRegister">
                             <DataAnnotationsValidator/>
@@ -83,6 +90,33 @@
             </div>
         </div>
     </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 col-lg-8 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <span class="fa-stack fa-lg">
+                                <a href="https://twitter.com/HeartwarmingFox" class="twitter">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </a>
+                            </span>
+                        </li>
+                        <li class="list-inline-item">
+                            <span class="fa-stack fa-lg">
+                                <a href="https://github.com/fluffballdev" class="github">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </a>
+                            </span>
+                        </li>
+                    </ul>
+                    <p class="text-muted copyright">Copyright&nbsp;©&nbsp;HeartwarmingFox 2022</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </section>
 @code
 {

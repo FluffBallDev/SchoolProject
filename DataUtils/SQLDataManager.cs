@@ -12,7 +12,7 @@ namespace DataUtils
     {
         private readonly IConfiguration _config;
 
-        public string ConnStringName { get; set; } = "Default";
+        private string ConnStringName { get; set; } = "Default";
         
         public SqlDataManager(IConfiguration config)
         {
@@ -21,23 +21,19 @@ namespace DataUtils
 
         public async Task<List<T>> LoadData<T, TU>(string sql, TU parameters)
         {
-            string? connString = _config.GetConnectionString(ConnStringName);
-            using (IDbConnection connection = new MySqlConnection(connString))
-            {
-                var rows = await connection.QueryAsync<T>(sql, parameters);
+            var connString = _config.GetConnectionString(ConnStringName);
+            using IDbConnection connection = new MySqlConnection(connString);
+            var rows = await connection.QueryAsync<T>(sql, parameters);
 
-                return rows.ToList();
-            }
+            return rows.ToList();
         }
 
         public Task SaveData<T>(string sql, T parameters)
         {
-            string? connString = _config.GetConnectionString(ConnStringName);
-            using (IDbConnection connection = new MySqlConnection(connString))
-            {
-                connection.Open();
-                return connection.ExecuteAsync(sql, parameters);
-            }
+            var connString = _config.GetConnectionString(ConnStringName);
+            using IDbConnection connection = new MySqlConnection(connString);
+            connection.Open();
+            return connection.ExecuteAsync(sql, parameters);
         }
     }
 }
