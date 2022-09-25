@@ -2,7 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
+using Dapper; 
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
@@ -27,7 +27,7 @@ namespace DataUtils
 
             return rows.ToList();
         }
-
+        
         public Task SaveData<T>(string sql, T parameters)
         {
             var connString = _config.GetConnectionString(ConnStringName);
